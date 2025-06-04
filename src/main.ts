@@ -75,7 +75,7 @@ async function getActress(id: number): Promise<Actress | null> {
 
 
 //Milestone 4
-async function getAllActresses(): Promise<Actress[] | null> {
+async function getAllActresses(): Promise<Actress[]> {
   try {
     const response = await fetch('http://localhost:5000/actresses');
     const dati: unknown = await response.json();
@@ -90,9 +90,23 @@ async function getAllActresses(): Promise<Actress[] | null> {
     } else {
       console.error('Errore sconosciuto', error)
     }
-    return null
+    return []
   }
 }
 
 
-console.log(getAllActresses())
+//Milestone 5
+async function getActresses(id: number[]): Promise<(Actress | null)[]> {
+  try {
+    const everyPromise = id.map(i => getActress(i));
+    return await Promise.all(everyPromise)
+  }
+  catch (error) {
+    if (error instanceof Error) {
+      console.error('Errore durante il recupero dei dati:', error)
+    } else {
+      console.error('Errore sconosciuto', error)
+    }
+    return []
+  }
+}
