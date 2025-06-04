@@ -72,3 +72,27 @@ async function getActress(id: number): Promise<Actress | null> {
   }
 }
 
+
+
+//Milestone 4
+async function getAllActresses(): Promise<Actress[] | null> {
+  try {
+    const response = await fetch('http://localhost:5000/actresses');
+    const dati: unknown = await response.json();
+    if (!(dati instanceof Array)) {
+      throw new Error('Formato dei dati diverso da un array')
+    }
+    const validActress: Actress[] = dati.filter(d => isActress(d));
+    return validActress;
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error('Errore durante il recupero dei dati:', error)
+    } else {
+      console.error('Errore sconosciuto', error)
+    }
+    return null
+  }
+}
+
+
+console.log(getAllActresses())
